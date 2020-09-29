@@ -3,9 +3,13 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
 from models import db
+from views import index_blu, user_blu
 
 app = Flask(__name__)
 app.config.from_pyfile('config.ini')
+app.register_blueprint(index_blu)
+app.register_blueprint(user_blu)
+
 # 初始化，只在第一次迁移数据库用
 db.init_app(app)
 
@@ -15,11 +19,6 @@ manager = Manager(app)
 migrate = Migrate(app, db)
 # 添加db命令
 manager.add_command('db', MigrateCommand)
-
-
-@app.route('/')
-def index():
-    return 'hello world'
 
 
 if __name__ == '__main__':
